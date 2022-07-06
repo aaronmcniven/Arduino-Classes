@@ -10,14 +10,12 @@ SimpleActuator::SimpleActuator() {
 	m_closePin = -1;
 	m_lockPin = -1;
 	
-	m_lockDelay = 500;
+	m_lockDelay = 250;
 	m_disable = false;
 }
 
 SimpleActuator::SimpleActuator(int openPin, int closePin) {
 	
-	m_openPin = openPin;
-	m_closePin = closePin;
 	m_lockPin = -1;
 	
 	m_lockDelay = 500;
@@ -26,41 +24,49 @@ SimpleActuator::SimpleActuator(int openPin, int closePin) {
 	setOpenPin(openPin);
 	setClosePin(closePin);
 	
-	stop();
+	stop(false);
 }
 
 void SimpleActuator::setPins(int openPin, int closePin) {
 	
+	m_lockDelay = 500;
+	m_disable = false;
+	
 	setOpenPin(openPin);
 	setClosePin(closePin);
+	stop(false);
 }
 
 void SimpleActuator::setPins(int openPin, int closePin, int lockPin) {
 	
+	m_lockDelay = 500;
+	m_disable = false;
+	
 	setOpenPin(openPin);
 	setClosePin(closePin);
 	setLockPin(lockPin);
+	stop(false);
 }
 
 void SimpleActuator::setOpenPin(int openPin) {
 	
 	m_openPin = openPin;
 	pinMode(m_openPin, OUTPUT);
-	digitalWrite(m_openPin, LOW);
+	stop(false);
 }
 
 void SimpleActuator::setClosePin(int closePin) {
 	
 	m_closePin = closePin;
 	pinMode(m_closePin, OUTPUT);
-	digitalWrite(m_closePin, LOW);
+	stop(false);
 }
 
 void SimpleActuator::setLockPin(int lockPin) {
 	
 	m_lockPin = lockPin;
 	pinMode(m_lockPin, OUTPUT);
-	digitalWrite(m_lockPin, LOW);
+	stop(false);
 }
 
 bool SimpleActuator::beginOpen() {
@@ -99,7 +105,9 @@ void SimpleActuator::stop(bool requireReboot) {
 	digitalWrite(m_closePin, LOW);
 	digitalWrite(m_lockPin, LOW);
 	
-	m_disable = true;
+  if(requireReboot) {
+	  m_disable = true;
+  }
 }
 
 void SimpleActuator::setLockDelay(int lockDelay) {

@@ -25,6 +25,7 @@ class SimpleTimer {
 		void stopTimer();
 		bool expired(bool restartNow);
 		bool getFlasher();
+		unsigned long getElapsed();
 };
 
 #endif

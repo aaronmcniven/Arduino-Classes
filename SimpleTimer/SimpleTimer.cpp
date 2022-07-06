@@ -34,7 +34,7 @@ void SimpleTimer::setDuration(unsigned long duration, bool startNow) {
 
 void SimpleTimer::updateTimer() {
 	
-	if(millis() - m_value >= m_duration) {
+	if((unsigned long)(millis() - m_value) >= m_duration) {
 		m_expired = true;
 	}
 }
@@ -77,4 +77,9 @@ bool SimpleTimer::expired(bool restartNow) {
 bool SimpleTimer::getFlasher() {
 	
 	return m_flasher;
+}
+
+unsigned long SimpleTimer::getElapsed() {
+
+  return millis() - m_value;
 }
